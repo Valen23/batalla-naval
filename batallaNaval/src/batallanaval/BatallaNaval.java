@@ -6,6 +6,12 @@ public class BatallaNaval {
     
     public static final int CANTIDAD_BARCOS = 3; // Esta constante indica la cantidad de barcos con la que se juega
     
+    public static void limpiarConsola(int x){
+        for(int i=0; i<=x; i++){
+            System.out.println();
+        }
+    }
+    
     public static void imprimirMatriz(boolean[][] matrizJugador, int dimensionX, int dimensionY){
         //System.out.println("  =TU-TABLERO==");
         System.out.println("  | " + 1 + " " + 2 + " " + 3 + " " + 4 + " " + 5 + " |");
@@ -19,7 +25,7 @@ public class BatallaNaval {
                    System.out.print("1 ");
                }
            }
-           System.out.println("|");
+           System.out.println("| ");
         }
         System.out.println("===============");
     }
@@ -106,8 +112,14 @@ public class BatallaNaval {
     }
 
     public static void main(String[] args) {
+        
+        GeneradorAleatorio.iniciar();
+        
+        limpiarConsola(1);
         System.out.println("Bienvenido al clasico juego de mesa 'Batalla Naval' pero esta vez en consola!\n(en blanco y negro y tan solo con caracteres ASCII)");
-        System.out.println("Primero debes colocar tu flota en posicion:\n");
+        System.out.println("Primero debes colocar tu flota en posicion:");
+        limpiarConsola(1);
+        
         // Dimensiones y cantidad de barcos
         int dimensionX = 5;
         int dimensionY = 5;
@@ -117,6 +129,7 @@ public class BatallaNaval {
         boolean[][] matrizJugador = new boolean[dimensionY][dimensionX];
         char[][] matrizBombasJugador = new char[dimensionY][dimensionX];
         boolean[][] matrizMaquina = new boolean[dimensionY][dimensionX];
+        char[][] matrizBombasMaquina = new char[dimensionY][dimensionX];
         
         // Inicializamos ambas matrices
         inicializarMatriz(matrizJugador, dimensionX, dimensionY);
@@ -124,25 +137,28 @@ public class BatallaNaval {
         for(int i=0; i<dimensionX; i++){
             for(int j=0; j<dimensionY; j++){
                 matrizBombasJugador[i][j] = '#';
+                matrizBombasMaquina[i][j] = '#';
             }
         }
         
         // Estructura de control para que el usuario coloque los barcos
         empezarJugador(matrizJugador, dimensionX, dimensionY, cantBarcos);
         
-        System.out.println("Has terminado de colocar tus barcos, es turno de la maquina!\n\n");
+        System.out.println("Has terminado de colocar tus barcos, es turno de la maquina!");
+        limpiarConsola(2);
         
         cantBarcos = CANTIDAD_BARCOS;
         
         empezarMaquina(matrizMaquina, dimensionX, dimensionY, cantBarcos);
         pantallaCarga();
-        System.out.println("\n\n\nLa maquina termino de colocar sus barcos, es hora de jugar!");
+        limpiarConsola(3);
+        System.out.println("La maquina termino de colocar sus barcos, es hora de jugar!");
         System.out.flush();
         
         int barcosHundidosJugador = cantBarcos;
         int barcosHundidosMaquina = cantBarcos;
-        int columnaJ;
         int filaJ;
+        int columnaJ;
         
         while((barcosHundidosMaquina != 0)&&(barcosHundidosJugador != 0)){
             System.out.println("\n===TU TURNO!===");
@@ -156,48 +172,65 @@ public class BatallaNaval {
             
             System.out.print("Ingrese la columna donde va a caer la bomba " + "(1-" + dimensionX + ")" + ": ");
             columnaJ = Lector.leerInt();
-            while((columnaJ < 1)||(columnaJ > dimensionX)){
+            while((columnaJ < 1)||(columnaJ > dimensionY)){
                 System.out.println("POSICION INVALIDA, RECORDA QUE EL TABLERO ES DE " + dimensionX + "X" + dimensionY + " POSICIONES!");
-                columnaJ = Lector.leerInt();
+                filaJ = Lector.leerInt();
             }
             
-            System.out.println("Bomba en camino!\n\n");
+            System.out.println("Bomba en camino!");
+            limpiarConsola(2);
             
             pantallaCarga();
             if(matrizMaquina[filaJ-1][columnaJ-1] == true){
                 barcosHundidosJugador--;
                 matrizBombasJugador[filaJ-1][columnaJ-1] = 'X';
                 matrizMaquina[filaJ-1][columnaJ-1] = false;
-                System.out.println("\n\n\nHas dado en el blanco!");
-                System.out.println("El oponente tiene " + barcosHundidosJugador + " barcos restantes!\n");
+                limpiarConsola(3);
+                System.out.println("Has dado en el blanco!");
+                System.out.println("El oponente tiene " + barcosHundidosJugador + " barcos restantes!");
+                limpiarConsola(1);
             } else {
-                System.out.println("\n\n\nAgua!\n");
+                limpiarConsola(3);
+                System.out.println("Agua!");
+                limpiarConsola(1);
                 matrizBombasJugador[filaJ-1][columnaJ-1] = 'O';
             }
             
             imprimirMatrices(matrizJugador, matrizBombasJugador, dimensionX, dimensionY);
             
-            System.out.println("\n===TURNO DEL OPONENTE===\n\n");
+            limpiarConsola(1);
+            System.out.println("===TURNO DEL OPONENTE===");
+            limpiarConsola(2);
             pantallaCarga();
             
             int filaM = GeneradorAleatorio.generarInt(dimensionX);
             int columnaM = GeneradorAleatorio.generarInt(dimensionX);
-            System.out.println("\n\n\nEl oponente ha elegido la fila " + (filaM + 1) + " y la columna " + (columnaM + 1) + "\n");
+            while((matrizBombasMaquina[filaM][columnaM] == 'O')||(matrizBombasMaquina[filaM][columnaM] == 'X')){
+                filaM = GeneradorAleatorio.generarInt(dimensionX);
+                columnaM = GeneradorAleatorio.generarInt(dimensionX);
+            }
+            limpiarConsola(3);
+            System.out.println("El oponente ha elegido la fila " + (filaM + 1) + " y la columna " + (columnaM + 1) + "\n");
+            limpiarConsola(1);
             if(matrizJugador[filaM][columnaM] == true){
                 barcosHundidosMaquina--;
                 matrizJugador[filaM][columnaM] = false;
                 System.out.println("El oponente ha dado en el blanco!");
                 System.out.println("Tienes " + barcosHundidosMaquina + " barcos restantes!");
             } else {
-                System.out.println("\nAgua!\n");
+                limpiarConsola(1);
+                System.out.println("Agua!");
+                limpiarConsola(1);
             }
         }
         
         if(barcosHundidosJugador == 0){
-            System.out.println("\n\n\n\n\n=====HAS GANADO!=====");
+            limpiarConsola(5);
+            System.out.println("=====HAS GANADO!=====");
             String fin = Lector.leerString();
         } else {
-            System.out.println("\n\n\n\n\n=====HAS PERDIDO!=====");
+            limpiarConsola(5);
+            System.out.println("=====HAS PERDIDO!=====");
             String fin = Lector.leerString();
         }
     }
