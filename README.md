@@ -1,2 +1,2 @@
 # batalla-naval
- Juego de batalla naval en consola!
+ Juego de batalla naval en consola! [beta]
