@@ -13,9 +13,13 @@ public class BatallaNaval {
     }
     
     public static void imprimirMatriz(boolean[][] matrizJugador, int dimensionX, int dimensionY){
-        //System.out.println("  =TU-TABLERO==");
-        System.out.println("  | " + 1 + " " + 2 + " " + 3 + " " + 4 + " " + 5 + " |");
-        System.out.println("==============="); 
+        System.out.print("  | ");
+        for(int i=1; i<=dimensionX; i++){
+            System.out.print(i + " ");
+        }
+        System.out.print("|");
+        System.out.println();
+        System.out.println("---------------"); 
         for(int i=0; i<dimensionY; i++){
            System.out.print((i+1) + " | ");
            for(int j=0; j<dimensionX; j++){
@@ -27,12 +31,21 @@ public class BatallaNaval {
            }
            System.out.println("| ");
         }
-        System.out.println("===============");
+        System.out.println("---------------");
     }
     
     public static void imprimirMatrices(boolean[][] matriz1, char[][] matriz2, int filas, int columnas){
+    System.out.print("  | ");
+    for(int i = 1; i < 3; i++){
+        for(int j = 1; j<=columnas; j++){
+            System.out.print(j   + " ");
+        }
+        System.out.print("| ");
+    }
+    System.out.println();
+    System.out.println("---------------------------");
     for(int i = 0; i < filas; i++){
-        // Imprimir fila de la primera matriz
+        System.out.print(i+1 + " | ");
         for (int j = 0; j < columnas; j++) {
             if (matriz1[i][j]) {
                 System.out.print("1 ");
@@ -41,17 +54,15 @@ public class BatallaNaval {
             }
         }
 
-        // Separar ambas matrices con un espacio
-        System.out.print("|");
+        System.out.print("| ");
 
-        // Imprimir fila de la segunda matriz
         for (int j = 0; j < columnas; j++) {
             System.out.print(matriz2[i][j] + " ");
         }
-
-        // Mover a la siguiente línea
+        System.out.print("|");
         System.out.println();
         }
+    System.out.println("---------------------------");
     }
     
     public static void inicializarMatriz(boolean[][] matrizJugador, int dimensionX, int dimensionY){
